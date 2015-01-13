@@ -4,11 +4,9 @@ import urllib
 from urllib import urlopen
 import zipfile
 
-import SimpleHTTPServer
-import BaseHTTPServer
-import CGIHTTPServer
-
-
+#import SimpleHTTPServer
+#import BaseHTTPServer
+#import CGIHTTPServer
 
 def Download(url, path, name):
 	if not os.path.exists(path):
@@ -56,7 +54,6 @@ def Copy(src,dst):
 	s.close()
 
 
-
 # There are two stages to the packaging.
 # If we just want to install the Runtime and RVM then all we need to do is download and extract them to
 # correct locations.  
@@ -66,7 +63,7 @@ def Copy(src,dst):
 # compressed zip files of both itself and the Runtime.
 
 
-def Deploy(folder, version, port):
+def Deploy(folder, version, host, port):
 
 	def DeployRuntime(debug=False):
 
@@ -90,8 +87,6 @@ def Deploy(folder, version, port):
 			print "Failed to download runtime version " + version
 
 
-
-
 	def DeployRVM(debug=False):
 
 		print "Deploying OpenFin RVM"
@@ -113,13 +108,15 @@ def Deploy(folder, version, port):
 		# Now write an RVM config file that will specify our deployment.  We can later copy
 		# this to the install directory.
 
+		root = "http://%s:%s/%s" % (host,port,os.path.basename(folder))
+
 		json = """
 			{
-				"rootUrl": "http://localhost:%s/",
-				"dlEncryptedRootUrl": "http://localhost:%s/services/s/",
-				"dlRootUrl": "http://localhost:%s/"
+				"rootUrl": "%s/",
+				"dlEncryptedRootUrl": "%s/services/s/",
+				"dlRootUrl": "%s/"
 			}
-			""" % (port,port,port)
+			""" % (root,root,root)
 
 		print "Creating RVM config " + os.path.join(folder,"rvm.json")
 
@@ -258,7 +255,7 @@ if __name__ == "__main__":
 	folder = os.path.join(cwd,"deploy")
 	version = "3.0.1.5"
 
-	Deploy(folder,version,port)
+	Deploy(folder,version,host,port)
 	Install(folder,version)
 	
 
