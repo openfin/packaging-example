@@ -1,0 +1,12 @@
+{
+    "name": "OpenFinPackage",
+    "version": "0.0.1",
+    "description": "OpenFin Package",
+    "main": "server.js",
+    "author": "",
+    "license": "MIT",
+    "homepage": "https://openfin.co",
+    "dependencies": {
+        "express": "^4.2.0"
+    }
+}
