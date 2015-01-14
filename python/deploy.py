@@ -1,7 +1,7 @@
 import os
 import sys
 import urllib
-from urllib import urlopen
+from urllib2 import urlopen
 import zipfile
 
 #import SimpleHTTPServer
